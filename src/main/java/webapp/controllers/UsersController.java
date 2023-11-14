@@ -18,44 +18,49 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+    @GetMapping("/")
+    public String startPage() {
         return "index";
     }
 
-    @GetMapping()
+    @GetMapping("/users")
+    public String showAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";
+    }
+
+    @GetMapping("/user/{id}")
     public String showUser(@RequestParam("id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         return "show";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/users/new")
     public String newUser(@ModelAttribute("user") User user) {
         return "new";
     }
 
-    @PostMapping()
+    @PostMapping("/users/create")
     public String createUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    @GetMapping()
+    @GetMapping("/user/edit/{id}")
     public String editUser(@RequestParam("id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
 
-    @PatchMapping()
+    @PatchMapping("/user/update/{id}")
     public String updateUser(@ModelAttribute("user") User user, @RequestParam("id") int id) {
         userService.updateUser(id, user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/user/delete/{id}")
     public String deleteUser(@RequestParam("id") int id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/users";
     }
 }
