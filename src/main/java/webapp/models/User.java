@@ -1,6 +1,7 @@
 package webapp.models;
 
 import jakarta.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -11,20 +12,23 @@ public class User {
     @Column(name = "id")
     private int id;
 
+    @NotBlank(message = "Name is required")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     @Column(name = "name")
     private String name;
 
+    @NotBlank(message = "Last name is required")
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     @Column(name = "last_name")
     private String lastName;
 
+    @Email(message = "Invalid email format")
+    @Column(name = "email")
+    private String email;
 
-    public User() {
-    }
-
-    public User(String name, String lastName) {
-        this.name = name;
-        this.lastName = lastName;
-    }
+    @Pattern(regexp = "[0-9]{10}", message = "Phone number must be 10 digits")
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     public int getId() {
         return id;
@@ -50,11 +54,29 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }
