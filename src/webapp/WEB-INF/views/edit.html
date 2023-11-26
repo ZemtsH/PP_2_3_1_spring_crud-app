@@ -9,7 +9,10 @@
 
 <body>
 
-<form th:method="PATCH" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
+<form method="post" th:action="@{/update/{id}(id=${user.getId()})}" th:object="${user}">
+
+    <input type="hidden" name="_method" value="patch"/>
+
     <label for="name">Enter name: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>
@@ -23,11 +26,13 @@
     <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
     <br/>
 
-    <input type="submit" value="Update user"/>
+    <button type="submit">Update user</button>
 </form>
 
 <br/>
-<a th:href="@{/{id}(id=${user.getId()})}">Back to user</a>
+<li><a th:href="@{/users}">Back to users</a></li>
+<br/>
+<li><a th:href="@{/}">Main page</a></li>
 </body>
 
 </html>

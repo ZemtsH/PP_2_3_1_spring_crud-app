@@ -1,5 +1,7 @@
 package webapp.controllers;
 
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 import webapp.models.User;
 import webapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,44 +20,47 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public String showAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+    @GetMapping("/")
+    public String startPage() {
         return "index";
     }
 
-    @GetMapping("/{id}")
-    public String showUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        return "show";
+    @GetMapping("/users")
+    public String showAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/users/new")
     public String newUser(@ModelAttribute("user") User user) {
         return "new";
     }
 
-    @PostMapping()
-    public String createUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
-        return "redirect:/";
+    @PostMapping("/users/new")
+    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "users";
+        } else {
+            userService.saveUser(user);
+            return "redirect:/users";
+        }
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/edit/{id}")
     public String editUser(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         return "edit";
     }
 
-    @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+    @PatchMapping("/update/{id}")
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable int id) {
         userService.updateUser(id, user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/users";
     }
 }

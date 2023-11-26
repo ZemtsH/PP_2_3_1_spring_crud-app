@@ -8,13 +8,45 @@
 </head>
 
 <body>
+<h1>List Users</h1>
 
-<div th:each="user : ${users}">
-    <a th:href="@{/{id}(id=${user.getId()})}" th:text="${user.getName()}">user</a>
-</div>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getId()}"></td>
+        <td th:text="${user.getName()}"></td>
+        <td th:text="${user.getLastName()}"></td>
+        <td th:text="${user.getEmail()}"></td>
+        <td th:text="${user.getPhoneNumber()}"></td>
+        <td>
+            <form th:action="@{/edit/{id}(id=${user.getId()})}" th:method="get" style="display: inline;">
+                <button type="submit" style="border: none; background: none; color: blue; text-decoration: underline; cursor: pointer;">Edit</button>
+            </form>
+            <span> | </span>
+            <form th:action="@{/delete/{id}(id=${user.getId()})}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit" style="border: none; background: none; color: blue; text-decoration: underline; cursor: pointer;">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 <br/>
-<a href="/new">Add new user</a>
+<li><a th:href="@{/users/new}">Add a User</a></li>
+<br/>
+<li><a th:href="@{/}">Main page</a></li>
+
 
 </body>
 

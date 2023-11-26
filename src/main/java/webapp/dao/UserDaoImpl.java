@@ -25,8 +25,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        entityManager.persist(user);
-        entityManager.flush();
+        entityManager.merge(user);
     }
 
     @Override
@@ -35,6 +34,8 @@ public class UserDaoImpl implements UserDao {
 
         updatedUser.setName(user.getName());
         updatedUser.setLastName(user.getLastName());
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setPhoneNumber(user.getPhoneNumber());
 
         entityManager.flush();
     }
